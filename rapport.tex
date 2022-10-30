@@ -1,0 +1,65 @@
+\documentclass{article}
+
+\usepackage[french]{babel}
+
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{minted}
+
+\title{Projet Prog 1}
+\author{Micol Giacomin}
+
+\begin{document}
+\maketitle
+
+\section{Le programme principal}
+
+J'ai utilisé ocamllex et ocamlyacc assez tôt (contrairement à certains de mes camarades), après recommandation de la part d'un 2A dont les conseils étaient très utiles au cours de ce projet.
+
+
+La syntaxe pour les fichiers .mll et .mly n'était pas évidente. J'ai du utiliser plusieurs ressources internet et demander de l'aide à des 2A quand le terminal m'affichait des erreurs très perturbantes de type.
+
+Ensuite, le compilateur : J'ai commencer par les commandes entières uniquement. La partie la plus difficile était comprendre la libraire x86\_64, et surtout comprendre comment concaténer les commandes. Mais, ensuite, cela me semblait assez rapide. Ensuite, il restait quelques problèmes de modulo, mais un ami m'a parlé de la commande cqto, qui enlève tous les problèmes de modulo négatifs.
+
+
+Pour les commandes flottantes : Ajouter les fonctions de type movsd ou addsd et les registres xmm0 et xmm1 n'était pas difficile. Mais comprendre les labels était plus compliqué car je n'avais même pas compris comment gérer le data en code assembler. Mais une fois cela fait, (et après quelques autres problèmes de stack des floatants et du printf) tout fonctionnait !
+
+\section{Exposant}
+
+J'ai programmé l'exposant (avec la commande \^) sans trop de difficultés. Après tout le travail déjà fait, il suffisait de comprendre comment bien faire des nouvelles fonctions (que j'ai appelé compare et exposant) et bien utiliser les jmp, jeg, cmp.
+
+
+Je n'ai pas programmé les exposant négatifs par contre ! Je me disais que ca revenait un peu à la même chose en utilisant divq à la place de imulq... et je voulais passer à la gestion de variables. Donc une expression de type $ 2 ^ (-3) $ renverra 1 (et non une erreur).
+
+\section{Gestion des Variables}
+
+Je n'ai finalement pas réussi, mais voici mon travail :
+
+
+Dans le fichier lexer.mll et parser.mly, j'ai rajouté les tokens suivant : VAR (type string), EQUAL et NEWLINE. Dans le fichier parser.mly, j'ai changé le type de main de ast à ast liste, et le type de expr de ast à ast liste aussi. J'ai modifié le type ast de manière à ce qu'il prennent aussi les allocutions. Ainsi, je voulais avoir pour fichier expression.exp de type :
+
+\begin{minted}[breaklines]{ocaml}
+x=2
+y=2
+x + y
+\end{minted}
+
+je voulais après le parsing une ast liste de type
+
+\begin{minted}[breaklines]{ocaml}
+[ Allocint(x, 2) ; Allocint(y, 3) ; Add(x, y) ] 
+\end{minted}
+
+Et compiler en créant les labels x et y dans le data.
+
+
+Cependant, je continuais à avoir des erreurs du au fichier parser.mly de problèmes de type.
+
+
+Quand j'ai résolu ces problèmes, j'ai eu une erreur de "caractère illégal"... alors que je n'avais que des caractères légaux je pense ? (possiblement un problème de compatibilité mac ocaml car j'ai codé sur mac...) Comme je n'ai pas de précieux 2A à proximité pour m'aider, j'ai décidé de profiter de mes vacances et d'apprendre tout cela pour le projet prog 2.
+
+\end{document}
