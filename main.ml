@@ -19,7 +19,9 @@ let main file =
   try
     let lexbuf = Lexing.from_channel fp in
     let ast = Parser.main Lexer.token lexbuf in
-    print_in_file "test.s" (comp ast)
+    let f = Sys.argv.(1) in
+    let n = String.length f in
+    print_in_file ((String.sub Sys.argv.(1) 0 (n-3))^ "s") (comp ast)
   with
    | Lexer.Eof ->
       exit 0
